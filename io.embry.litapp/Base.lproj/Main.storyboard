@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pcN-Wn-PZQ">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="io_embry_litapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOl-iq-p1x">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </arscnView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JOl-iq-p1x" secondAttribute="trailing" id="3He-YC-174"/>
+                            <constraint firstItem="JOl-iq-p1x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="55L-vR-Xcz"/>
+                            <constraint firstItem="JOl-iq-p1x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="tTA-K6-388"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="JOl-iq-p1x" secondAttribute="bottom" id="wko-Ne-LiY"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="viewMainScene" destination="JOl-iq-p1x" id="hmp-JQ-mKl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1319" y="120"/>
+        </scene>
+        <!--Launch View Controller-->
+        <scene sceneID="MJp-yY-931">
+            <objects>
+                <viewController id="pcN-Wn-PZQ" customClass="LaunchViewController" customModule="io_embry_litapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ssO-Vd-Fap">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please pick an image to start." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EXp-WG-g7r">
+                                <rect key="frame" x="20" y="40" width="335" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ebp-6b-3FI">
+                                <rect key="frame" x="20" y="111" width="335" height="30"/>
+                                <state key="normal" title="Pick an image from Photos"/>
+                                <connections>
+                                    <action selector="didTapPickFromPhotosButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="cDF-ON-fe7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94B-VS-Ni4">
+                                <rect key="frame" x="20" y="179" width="335" height="30"/>
+                                <state key="normal" title="Take a photo"/>
+                                <connections>
+                                    <action selector="didTapTakeAPhotoButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="yd2-DU-69T"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Buw-PY-bcf">
+                                <rect key="frame" x="47" y="229" width="280" height="280"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="Qqi-oI-5MW"/>
+                                    <constraint firstAttribute="height" constant="280" id="ga5-Dc-KZv"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qzR-E9-yxq">
+                                <rect key="frame" x="20" y="617" width="335" height="30"/>
+                                <state key="normal" title="Magic Time!"/>
+                                <connections>
+                                    <action selector="didTapMagicButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="6hZ-pu-ZVe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="Ebp-6b-3FI" secondAttribute="trailing" constant="20" id="2J7-DO-Dsd"/>
+                            <constraint firstItem="qzR-E9-yxq" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="7kY-fx-9Jl"/>
+                            <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="94B-VS-Ni4" secondAttribute="trailing" constant="20" id="AUV-BL-NxQ"/>
+                            <constraint firstItem="Buw-PY-bcf" firstAttribute="centerX" secondItem="zh3-pX-ihM" secondAttribute="centerX" id="FAv-4K-hpz"/>
+                            <constraint firstItem="Ebp-6b-3FI" firstAttribute="top" secondItem="EXp-WG-g7r" secondAttribute="bottom" constant="50" id="H5a-Ar-xX3"/>
+                            <constraint firstItem="94B-VS-Ni4" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="Li7-Mt-949"/>
+                            <constraint firstItem="Ebp-6b-3FI" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="PNT-8K-0dP"/>
+                            <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="EXp-WG-g7r" secondAttribute="trailing" constant="20" id="TKK-3a-dYa"/>
+                            <constraint firstItem="94B-VS-Ni4" firstAttribute="top" secondItem="Ebp-6b-3FI" secondAttribute="bottom" constant="38" id="Yhd-pt-SzJ"/>
+                            <constraint firstItem="EXp-WG-g7r" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="aTg-xg-R3Z"/>
+                            <constraint firstItem="EXp-WG-g7r" firstAttribute="top" secondItem="zh3-pX-ihM" secondAttribute="top" constant="20" id="dQI-eC-phc"/>
+                            <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="qzR-E9-yxq" secondAttribute="trailing" constant="20" id="e5g-BG-cXs"/>
+                            <constraint firstItem="zh3-pX-ihM" firstAttribute="bottom" secondItem="qzR-E9-yxq" secondAttribute="bottom" constant="20" id="hDr-Ay-1hi"/>
+                            <constraint firstItem="Buw-PY-bcf" firstAttribute="top" secondItem="94B-VS-Ni4" secondAttribute="bottom" constant="20" id="p8b-fh-ZUg"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zh3-pX-ihM"/>
+                    </view>
+                    <connections>
+                        <outlet property="btnMagic" destination="qzR-E9-yxq" id="Zd8-Nt-VVd"/>
+                        <outlet property="imagePickedImage" destination="Buw-PY-bcf" id="TRF-cD-K7R"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IPx-TP-JvD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="476" y="118.29085457271366"/>
+        </scene>
+    </scenes>
+</document>
