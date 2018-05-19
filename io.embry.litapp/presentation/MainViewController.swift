@@ -15,15 +15,19 @@ import Dispatch
 class MainViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet weak var viewMainScene: ARSCNView!
+    var arReferenceImages = [ARReferenceImage]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         let config = ARWorldTrackingConfiguration()
-        guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
-            fatalError("Missing expected asset catalog resources.")
+        //guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
+           // fatalError("Missing expected asset catalog resources.")
+        if (arReferenceImages.count > 0) {
+            let referenceImages = Set(arReferenceImages.map {$0} )
+            config.detectionImages = referenceImages
+            viewMainScene.session.run(config, options: [.resetTracking, .removeExistingAnchors])
         }
-        config.detectionImages = referenceImages
-        viewMainScene.session.run(config, options: [.resetTracking, .removeExistingAnchors])
+        
         viewMainScene.delegate = self
     }
     

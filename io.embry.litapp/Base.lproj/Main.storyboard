@@ -47,28 +47,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please pick an image to start." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EXp-WG-g7r">
-                                <rect key="frame" x="20" y="40" width="335" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please pick an image to start." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="EXp-WG-g7r">
+                                <rect key="frame" x="20" y="40" width="335" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ebp-6b-3FI">
-                                <rect key="frame" x="20" y="111" width="335" height="30"/>
+                                <rect key="frame" x="20" y="110.5" width="335" height="30"/>
                                 <state key="normal" title="Pick an image from Photos"/>
                                 <connections>
                                     <action selector="didTapPickFromPhotosButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="cDF-ON-fe7"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94B-VS-Ni4">
-                                <rect key="frame" x="20" y="179" width="335" height="30"/>
+                                <rect key="frame" x="20" y="178.5" width="335" height="30"/>
                                 <state key="normal" title="Take a photo"/>
                                 <connections>
                                     <action selector="didTapTakeAPhotoButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="yd2-DU-69T"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Buw-PY-bcf">
-                                <rect key="frame" x="47" y="229" width="280" height="280"/>
+                                <rect key="frame" x="47" y="228.5" width="280" height="280"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="Qqi-oI-5MW"/>
                                     <constraint firstAttribute="height" constant="280" id="ga5-Dc-KZv"/>
@@ -79,6 +79,7 @@
                                 <state key="normal" title="Magic Time!"/>
                                 <connections>
                                     <action selector="didTapMagicButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="6hZ-pu-ZVe"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="toScnView" id="QI3-OH-drX"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -104,6 +105,7 @@
                     <connections>
                         <outlet property="btnMagic" destination="qzR-E9-yxq" id="Zd8-Nt-VVd"/>
                         <outlet property="imagePickedImage" destination="Buw-PY-bcf" id="TRF-cD-K7R"/>
+                        <outlet property="lblStatus" destination="EXp-WG-g7r" id="qQB-U1-xdE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IPx-TP-JvD" userLabel="First Responder" sceneMemberID="firstResponder"/>
