@@ -109,8 +109,8 @@
                                     <constraint firstAttribute="height" constant="280" id="oKB-CE-7zH"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting to detect image." textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3nB-Yu-M5e">
-                                <rect key="frame" x="10" y="114.5" width="355" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting to detect image." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3nB-Yu-M5e">
+                                <rect key="frame" x="10" y="114.5" width="355" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -167,11 +167,11 @@
                                     <action selector="didTapTakeAPhotoButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="yd2-DU-69T"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Buw-PY-bcf">
-                                <rect key="frame" x="47" y="228.5" width="223" height="223"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Buw-PY-bcf">
+                                <rect key="frame" x="87.5" y="272.5" width="200" height="200"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="280" id="Qqi-oI-5MW"/>
-                                    <constraint firstAttribute="height" constant="280" id="ga5-Dc-KZv"/>
+                                    <constraint firstAttribute="width" constant="200" id="Qqi-oI-5MW"/>
+                                    <constraint firstAttribute="height" constant="200" id="ga5-Dc-KZv"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qzR-E9-yxq">
