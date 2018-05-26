@@ -15,6 +15,8 @@ class LaunchViewController: UIViewController, UIImagePickerControllerDelegate, U
     //MARK - properties
     @IBOutlet weak var imagePickedImage: UIImageView!
     
+    @IBOutlet weak var btnAnalyse: UIButton!
+    
     @IBOutlet weak var lblStatus: UILabel!
     
     @IBOutlet weak var btnMagic: UIButton!
@@ -24,11 +26,9 @@ class LaunchViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         btnMagic.alpha = 0.5
+        btnAnalyse.alpha = 0.5
         btnMagic.isEnabled = false
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        btnAnalyse.isEnabled = false
     }
     
     //MARK - actions
@@ -58,11 +58,7 @@ class LaunchViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
-    
-    @IBAction func didTapMagicButton(_ sender: Any) {
-        performSegue(withIdentifier: "toScnView", sender: sender)
-    }
-    
+
     
     //MARK - imagePickerControllerDelegate
     
@@ -77,6 +73,8 @@ class LaunchViewController: UIViewController, UIImagePickerControllerDelegate, U
             lblStatus.text = "\(count) images selected. Nice, please select at least \(5-count) more."
             btnMagic.alpha = 1.0
             btnMagic.isEnabled = true
+            btnAnalyse.isEnabled = true
+            btnAnalyse.alpha = 1.0
         } else if (images.count >= 5){
             lblStatus.text = "Good work. You can select up to 10 images or proceed to Magic!"
         }
@@ -89,6 +87,11 @@ class LaunchViewController: UIViewController, UIImagePickerControllerDelegate, U
             let refImages = addDynamicARImages(images: images)
             let destination = segue.destination as? MainViewController
             destination?.arReferenceImages = refImages
+        }
+        
+        else if (segue.identifier == "toAnalyseView") {
+            let destination = segue.destination as? AnalyserViewController
+            destination?.selectedImage = images.first!
         }
     }
     
