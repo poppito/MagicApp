@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="ddP-eh-udD">
             <objects>
-                <viewController id="Pwz-d4-8ak" customClass="ARViewController" customModule="io_embry_litapp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Pwz-d4-8ak" customClass="MLViewController" customModule="io_embry_litapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VWQ-Pt-ilc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -45,7 +45,7 @@
                         <viewLayoutGuide key="safeArea" id="rOg-Nt-9hm"/>
                     </view>
                     <connections>
-                        <outlet property="lblStatusText" destination="6Eh-Td-iEu" id="wmx-Kl-NEQ"/>
+                        <outlet property="lblStatusText" destination="6Eh-Td-iEu" id="Jux-qB-AMi"/>
                         <outlet property="viewMainScene" destination="nxR-5t-01m" id="uR4-KT-M63"/>
                     </connections>
                 </viewController>
@@ -96,6 +96,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2256.8000000000002" y="119.1904047976012"/>
+        </scene>
+        <!--Run View Controller-->
+        <scene sceneID="TgJ-85-EmQ">
+            <objects>
+                <viewController id="e3h-Jy-3Eh" customClass="ARRunViewController" customModule="io_embry_litapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qti-Rh-qw2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arskView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1s-sT-smY">
+                                <rect key="frame" x="20" y="164" width="335" height="483"/>
+                            </arskView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detecting horizontal surfaces" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRI-CN-lhw">
+                                <rect key="frame" x="20" y="84" width="335" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mrX-NR-eNA">
+                                <rect key="frame" x="20" y="125" width="335" height="30"/>
+                                <state key="normal" title="Toggle surface detection"/>
+                                <connections>
+                                    <action selector="onBtnTapped:" destination="e3h-Jy-3Eh" eventType="touchUpInside" id="HKJ-Ch-X1D"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Uji-sv-cNT" firstAttribute="bottom" secondItem="d1s-sT-smY" secondAttribute="bottom" constant="20" id="Cd0-rm-Nyy"/>
+                            <constraint firstItem="LRI-CN-lhw" firstAttribute="leading" secondItem="Uji-sv-cNT" secondAttribute="leading" constant="20" id="FUs-Tb-bgI"/>
+                            <constraint firstItem="mrX-NR-eNA" firstAttribute="leading" secondItem="Uji-sv-cNT" secondAttribute="leading" constant="20" id="HrY-Zk-VHo"/>
+                            <constraint firstItem="d1s-sT-smY" firstAttribute="leading" secondItem="Uji-sv-cNT" secondAttribute="leading" constant="20" id="MrC-ie-coM"/>
+                            <constraint firstItem="d1s-sT-smY" firstAttribute="top" secondItem="Uji-sv-cNT" secondAttribute="top" constant="100" id="Vnp-5c-Viu"/>
+                            <constraint firstItem="Uji-sv-cNT" firstAttribute="trailing" secondItem="mrX-NR-eNA" secondAttribute="trailing" constant="20" id="WtQ-Rh-hPf"/>
+                            <constraint firstItem="Uji-sv-cNT" firstAttribute="trailing" secondItem="LRI-CN-lhw" secondAttribute="trailing" constant="20" id="XL8-As-nA3"/>
+                            <constraint firstItem="LRI-CN-lhw" firstAttribute="top" secondItem="Uji-sv-cNT" secondAttribute="top" constant="20" id="ePS-iu-9bt"/>
+                            <constraint firstItem="mrX-NR-eNA" firstAttribute="top" secondItem="LRI-CN-lhw" secondAttribute="bottom" constant="20" id="ikS-jE-mJd"/>
+                            <constraint firstItem="Uji-sv-cNT" firstAttribute="trailing" secondItem="d1s-sT-smY" secondAttribute="trailing" constant="20" id="npy-lW-DDf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Uji-sv-cNT"/>
+                    </view>
+                    <connections>
+                        <outlet property="lblStatusView" destination="LRI-CN-lhw" id="PYv-2v-QEa"/>
+                        <outlet property="viewMainScene" destination="d1s-sT-smY" id="0p4-1C-VO0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cK8-Xh-Ehn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-458" y="1033"/>
         </scene>
         <!--Analyser View Controller-->
         <scene sceneID="Qa8-TB-HL7">
@@ -163,21 +212,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ebp-6b-3FI">
-                                <rect key="frame" x="20" y="154.5" width="335" height="30"/>
+                                <rect key="frame" x="20" y="124.5" width="335" height="30"/>
                                 <state key="normal" title="Pick an image from Photos"/>
                                 <connections>
                                     <action selector="didTapPickFromPhotosButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="cDF-ON-fe7"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94B-VS-Ni4">
-                                <rect key="frame" x="20" y="222.5" width="335" height="30"/>
+                                <rect key="frame" x="20" y="174.5" width="335" height="30"/>
                                 <state key="normal" title="Take a photo"/>
                                 <connections>
                                     <action selector="didTapTakeAPhotoButton:" destination="pcN-Wn-PZQ" eventType="touchUpInside" id="yd2-DU-69T"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Buw-PY-bcf">
-                                <rect key="frame" x="87.5" y="272.5" width="200" height="200"/>
+                                <rect key="frame" x="87.5" y="224.5" width="200" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="Qqi-oI-5MW"/>
                                     <constraint firstAttribute="height" constant="200" id="ga5-Dc-KZv"/>
@@ -199,9 +248,16 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zkT-ze-fw8">
                                 <rect key="frame" x="20" y="537" width="335" height="30"/>
-                                <state key="normal" title="Run AR!"/>
+                                <state key="normal" title="Real-time ML"/>
                                 <connections>
                                     <segue destination="Pwz-d4-8ak" kind="show" id="zoc-nd-fJz"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jHD-06-sjz">
+                                <rect key="frame" x="20" y="487" width="335" height="30"/>
+                                <state key="normal" title="Run AR"/>
+                                <connections>
+                                    <segue destination="e3h-Jy-3Eh" kind="show" id="lro-JS-zXL"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -209,18 +265,21 @@
                         <constraints>
                             <constraint firstItem="zkT-ze-fw8" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="2Gz-YQ-caf"/>
                             <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="Ebp-6b-3FI" secondAttribute="trailing" constant="20" id="2J7-DO-Dsd"/>
+                            <constraint firstItem="zkT-ze-fw8" firstAttribute="top" secondItem="jHD-06-sjz" secondAttribute="bottom" constant="20" id="5uk-sC-0W3"/>
+                            <constraint firstItem="jHD-06-sjz" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="5vC-QI-75U"/>
+                            <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="jHD-06-sjz" secondAttribute="trailing" constant="20" id="6rO-d7-DUk"/>
                             <constraint firstItem="qzR-E9-yxq" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="7kY-fx-9Jl"/>
                             <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="94B-VS-Ni4" secondAttribute="trailing" constant="20" id="AUV-BL-NxQ"/>
                             <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="zkT-ze-fw8" secondAttribute="trailing" constant="20" id="DUJ-SK-dJh"/>
                             <constraint firstItem="Lfi-yf-7G8" firstAttribute="top" secondItem="zkT-ze-fw8" secondAttribute="bottom" constant="10" id="Dt3-7w-Mnh"/>
                             <constraint firstItem="Buw-PY-bcf" firstAttribute="centerX" secondItem="zh3-pX-ihM" secondAttribute="centerX" id="FAv-4K-hpz"/>
-                            <constraint firstItem="Ebp-6b-3FI" firstAttribute="top" secondItem="EXp-WG-g7r" secondAttribute="bottom" constant="50" id="H5a-Ar-xX3"/>
+                            <constraint firstItem="Ebp-6b-3FI" firstAttribute="top" secondItem="EXp-WG-g7r" secondAttribute="bottom" constant="20" id="H5a-Ar-xX3"/>
                             <constraint firstItem="94B-VS-Ni4" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="Li7-Mt-949"/>
                             <constraint firstItem="Lfi-yf-7G8" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="Ojw-Yo-lr2"/>
                             <constraint firstItem="Ebp-6b-3FI" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="PNT-8K-0dP"/>
                             <constraint firstItem="qzR-E9-yxq" firstAttribute="top" secondItem="Lfi-yf-7G8" secondAttribute="bottom" constant="10" id="Plx-kV-s6b"/>
                             <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="EXp-WG-g7r" secondAttribute="trailing" constant="20" id="TKK-3a-dYa"/>
-                            <constraint firstItem="94B-VS-Ni4" firstAttribute="top" secondItem="Ebp-6b-3FI" secondAttribute="bottom" constant="38" id="Yhd-pt-SzJ"/>
+                            <constraint firstItem="94B-VS-Ni4" firstAttribute="top" secondItem="Ebp-6b-3FI" secondAttribute="bottom" constant="20" id="Yhd-pt-SzJ"/>
                             <constraint firstItem="EXp-WG-g7r" firstAttribute="leading" secondItem="zh3-pX-ihM" secondAttribute="leading" constant="20" id="aTg-xg-R3Z"/>
                             <constraint firstItem="zh3-pX-ihM" firstAttribute="trailing" secondItem="Lfi-yf-7G8" secondAttribute="trailing" constant="20" id="cPY-0g-kdD"/>
                             <constraint firstItem="EXp-WG-g7r" firstAttribute="top" secondItem="zh3-pX-ihM" secondAttribute="top" constant="20" id="dQI-eC-phc"/>

@@ -12,12 +12,13 @@ import ARKit
 import CoreML
 import SpriteKit
 
-class ARViewController: UIViewController, ARSessionDelegate {
+class MLViewController: UIViewController, ARSessionDelegate {
 
     @IBOutlet weak var viewMainScene: ARSKView!
     
+    
     @IBOutlet weak var lblStatusText: UILabel!
-        
+    
     var currentBuffer: CVPixelBuffer?
     
     var inceptionModel: VNCoreMLModel?
