@@ -19,7 +19,7 @@ class MainViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var arReferenceImages = [ARReferenceImage]()
 
     @IBOutlet weak var lblStatusText: UILabel!
-        
+    
     var detectionCount = 0
     
     override func viewDidLoad() {
@@ -32,6 +32,8 @@ class MainViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             let referenceImages = Set(arReferenceImages.map {$0} )
             config.detectionImages = referenceImages
             viewMainScene.session.run(config, options: [.resetTracking, .removeExistingAnchors])
+            viewMainScene.autoenablesDefaultLighting = true
+            viewMainScene.automaticallyUpdatesLighting = true
         }
         
         viewMainScene.delegate = self    }
@@ -49,11 +51,11 @@ class MainViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             
             let box = self.addMainBox()
             box.position = SCNVector3(x,y,-0.2)
-            if (self.detectionCount == 0) {
-            } else {
-                //node.replaceChildNode(box, with: box)
-            }
             node.addChildNode(box)
+            
+            guard let cat = self.addCat() else { return }
+            cat.position = SCNVector3(-0.2,y, -0.2)
+            node.addChildNode(cat)
         }
     }
     
@@ -65,14 +67,35 @@ class MainViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     private func addMainBox() -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1)
         let mainNode = SCNNode(geometry: box)
+        mainNode.geometry?.firstMaterial?.diffuse.contents = "bg.png"
         return mainNode
+    }
+    
+    
+    private func addCat() -> SCNNode? {
+        let container = SCNScene(named: "CatMac.dae")
+        let mainNode = container?.rootNode
+        mainNode?.geometry?.firstMaterial?.diffuse.contents = "bg.png"
+        return container?.rootNode
     }
 }
 
 //unused
 
 
-/*func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+/*
+ 
+ private func addLaptop() -> SCNNode? {
+ guard let url = Bundle.main.url(forResource: "Laptop", withExtension: "obj") else { return nil }
+ let asset = MDLAsset(url: url)
+ let object = asset.object(at: 0)
+ let node = SCNNode(mdlObject: object)
+ return node
+ }
+ 
+ 
+ 
+ func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
  guard let imageAnchor = anchor as? ARImageAnchor else { return }
  let referenceImage = imageAnchor.referenceImage
  DispatchQueue.main.async {
@@ -89,13 +112,6 @@ class MainViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 
 
 /*
- private func addLaptop() -> SCNNode? {
- guard let url = Bundle.main.url(forResource: "Laptop", withExtension: "obj") else { return nil }
- let asset = MDLAsset(url: url)
- let object = asset.object(at: 0)
- let node = SCNNode(mdlObject: object)
- return node
- }
  
  
  private func addLaptop() -> SCNNode? {

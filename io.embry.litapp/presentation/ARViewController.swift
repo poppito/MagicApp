@@ -20,6 +20,8 @@ class ARViewController: UIViewController, ARSessionDelegate {
         
     var currentBuffer: CVPixelBuffer?
     
+    var inceptionModel: VNCoreMLModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +33,8 @@ class ARViewController: UIViewController, ARSessionDelegate {
         viewMainScene.session.run(config, options: [])
         
         viewMainScene.session.delegate = self
+    
+        inceptionModel = try? VNCoreMLModel(for: Inceptionv3().model)
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,35 +53,39 @@ class ARViewController: UIViewController, ARSessionDelegate {
     
     
     func runImageClassification() {
-        guard let inceptionModel = try? VNCoreMLModel(for: Inceptionv3().model)
-            else {
-                fatalError("Something went wrong with an ML model")
-        }
-        
-        let inceptionRequest = VNCoreMLRequest(model: inceptionModel) { [weak self] request, error in
-            guard let results = request.results as? [VNClassificationObservation] else {
-                fatalError("unexpected result type from VNCoreMLRequest")
-            }
-            if let result = results.first {
-                if (result.confidence > 0.3) {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.lblStatusText.text = results.first?.identifier
+        if (inceptionModel != nil) {
+            let inceptionRequest = VNCoreMLRequest(model: inceptionModel!) { [weak self] request, error in
+                guard let results = request.results as? [VNClassificationObservation] else {
+                    fatalError("unexpected result type from VNCoreMLRequest")
+                }
+                if let result = results.first {
+                    if (result.confidence > 0.3) {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.lblStatusText.text = results.first?.identifier
+                        }
                     }
                 }
             }
-        }
-        
-        let inceptionRequestHandler = VNImageRequestHandler(cvPixelBuffer: currentBuffer!, orientation: CGImagePropertyOrientation.up)
-        
-        let classificationQueue = DispatchQueue(label: "classificationQueue")
-        
-        classificationQueue.async { [weak self] in
-            do {
-                defer {self?.currentBuffer = nil}
-                try inceptionRequestHandler.perform([inceptionRequest])
-            } catch {
-                print(error)
+            
+            let inceptionRequestHandler = VNImageRequestHandler(cvPixelBuffer: currentBuffer!, orientation: CGImagePropertyOrientation.up)
+            
+            let classificationQueue = DispatchQueue(label: "classificationQueue")
+            
+            classificationQueue.async { [weak self] in
+                do {
+                    defer {self?.currentBuffer = nil}
+                    try inceptionRequestHandler.perform([inceptionRequest])
+                } catch {
+                    print(error)
+                }
             }
+            
         }
+    }
+    
+    @IBAction func didTapScn(_ sender: UITapGestureRecognizer) {
+            let location = sender.location(in: viewMainScene)
+            let hitTest = viewMainScene.hitTest(location, types: [.featurePoint, .estimatedHorizontalPlane])
+            let result = hitTest.first
     }
 }
