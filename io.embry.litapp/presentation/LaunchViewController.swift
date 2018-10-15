@@ -88,11 +88,6 @@ class LaunchViewController: UIViewController, UIImagePickerControllerDelegate, U
             let destination = segue.destination as? MainViewController
             destination?.arReferenceImages = refImages
         }
-        
-        else if (segue.identifier == "toAnalyseView") {
-            let destination = segue.destination as? AnalyserViewController
-            destination?.selectedImage = images.first!
-        }
     }
     
     private func addDynamicARImages(images: [UIImage]) -> [ARReferenceImage] {

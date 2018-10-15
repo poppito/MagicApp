@@ -8,81 +8,177 @@
 
 import UIKit
 import ARKit
+import Vision
 
-class ARRunViewController: UIViewController, ARSKViewDelegate {
+class ARRunViewController:  UIViewController,
+                            UIImagePickerControllerDelegate,
+                            UINavigationControllerDelegate,
+                            ARSessionDelegate {
     
     
-    @IBOutlet weak var lblStatusView: UILabel!
+    @IBOutlet weak var viewMainScene: ARSCNView!
+    
+    var visa1: UIImage!
+    var visa2: UIImage!
+    var visa3: UIImage!
     
     
-    @IBOutlet weak var viewMainScene: ARSKView!
+    @IBOutlet weak var preview1: UIImageView!
+    @IBOutlet weak var preview2: UIImageView!
+    @IBOutlet weak var preview3: UIImageView!
+    @IBOutlet weak var imgPreview: UIImageView!
+    @IBOutlet weak var btnPhoto: UIButton!
     
-    private var planeDetectionHorizontal = true
+    var scnNode: SCNNode?
+    var tapRecogniser: UITapGestureRecognizer!
+    var currentFloat = Float(0)
     
+    var handsModel: VNCoreMLModel!
+    var currentBuffer: CVPixelBuffer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewMainScene.delegate = self
-        let skScene = SKScene()
-        skScene.scaleMode = .aspectFill
-        viewMainScene.presentScene(skScene)
-        
         let config = ARWorldTrackingConfiguration()
-        config.isLightEstimationEnabled = true
         config.isAutoFocusEnabled = true
-        config.planeDetection = .horizontal
-        viewMainScene.session.run(config, options: .removeExistingAnchors)
-        // Do any additional setup after loading the view.
+        viewMainScene.autoenablesDefaultLighting = true
+        viewMainScene.session.run(config, options: [])
+        viewMainScene.preferredFramesPerSecond = 10
+        viewMainScene.session.delegate = self
+        handsModel = try? VNCoreMLModel(for: hands().model)
+        let plane = SCNBox(width: 0.1, height: 0.05, length: 0.001, chamferRadius: 0.01)
+        scnNode = SCNNode(geometry: plane)
+        scnNode?.position = SCNVector3(0, 0, -0.2)
+        visa1 = UIImage(named: "visa-1")
+        visa2 = UIImage(named: "visa-2")
+        visa3 = UIImage(named: "visa-3")
+        scnNode?.geometry?.materials.first?.diffuse.contents = visa1
+        viewMainScene.scene.rootNode.addChildNode(scnNode!)
+        let preview1Tap = UITapGestureRecognizer(target: self, action: #selector(didTapFirstPreview))
+        let preview2Tap = UITapGestureRecognizer(target: self, action: #selector(didTapSecondPreview))
+        let preview3Tap = UITapGestureRecognizer(target: self, action: #selector(didTapThirdPreview))
+        
+        preview1.addGestureRecognizer(preview1Tap)
+        preview1.isUserInteractionEnabled = true
+        preview2.addGestureRecognizer(preview2Tap)
+        preview2.isUserInteractionEnabled = true
+        preview3.addGestureRecognizer(preview3Tap)
+        preview3.isUserInteractionEnabled = true
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        viewMainScene.session.pause()
     }
     
+    @objc func didTapFirstPreview(_ sender: UITapGestureRecognizer) {
+        scnNode?.removeFromParentNode()
+        scnNode?.geometry?.materials.first?.diffuse.contents = visa1
+        viewMainScene.scene.rootNode.addChildNode(scnNode!)
+    }
     
+    @objc func didTapSecondPreview(_ sender: UITapGestureRecognizer) {
+        scnNode?.removeFromParentNode()
+        scnNode?.geometry?.materials.first?.diffuse.contents = visa2
+        viewMainScene.scene.rootNode.addChildNode(scnNode!)
+    }
     
-    @IBAction func onBtnTapped(_ sender: Any) {
+    @objc func didTapThirdPreview(_ sender: UITapGestureRecognizer) {
+        scnNode?.removeFromParentNode()
+        scnNode?.geometry?.materials.first?.diffuse.contents = visa3
+        viewMainScene.scene.rootNode.addChildNode(scnNode!)
+    }
     
-        let config = ARWorldTrackingConfiguration()
-        config.isLightEstimationEnabled = true
-        config.isAutoFocusEnabled = true
-        
-        planeDetectionHorizontal = !planeDetectionHorizontal
-        if (planeDetectionHorizontal) {
-            config.planeDetection = .horizontal
-            lblStatusView.text = "Detecting horizontal surfaces"
-        } else {
-            config.planeDetection = .vertical
-            lblStatusView.text = "Detecting vertical surfaces"
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        guard case .normal = frame.camera.trackingState else {
+            return
         }
-        viewMainScene.session.run(config, options: .removeExistingAnchors)
+        self.currentBuffer = frame.capturedImage
+        currentFloat = currentFloat + Float(1)
+        if (currentFloat == Float(360)) {
+            currentFloat = 0
+        }
+        print("current float is \(currentFloat)")
+        DispatchQueue.main.async { [weak self] in
+            self?.rotateY(angle: self?.currentFloat ?? Float(0))
+            //self?.runImageDetection()
+        }
+    }
+
+    private func runImageDetection() {
+        guard let model = handsModel else { return }
+        let request = VNCoreMLRequest(model: model) { (request, error) in
+            guard error == nil, let results = request.results as? [VNClassificationObservation] else { return
+            }
+            guard let result = results.first else { return }
+            DispatchQueue.main.async { [weak self] in
+                if (result.confidence > 0.9) {
+                    if (result.identifier  == "normal") {
+                        //self?.rotateY(angle: self?.currentFloat ?? Float(0))
+                        print("normal")
+                    } else if (result.identifier == "up") {
+                        //self?.rotateX(angle: self?.currentFloat ?? Float(0))
+                        print("left")
+                    } else if (result.identifier == "fist") {
+                        //self?.rotateZ(angle: self?.currentFloat ?? Float(0))
+                        print("up")
+                    }
+                }
+                else {
+                    //print("nothing")
+                    //self?.scnNode?.removeFromParentNode()
+                    //self?.scnNode?.position = SCNVector3(0, 0, 0)
+                }
+            }
+        }
+        let requestHandler = VNImageRequestHandler(cvPixelBuffer: self.currentBuffer, orientation: .up, options: [:])
+        let queue = DispatchQueue(label: "classificationQueue")
+        queue.async { [weak self] in
+            defer { self?.currentBuffer = nil }
+            do {
+                try requestHandler.perform([request])
+            } catch {
+                print(error)
+            }
+        }
     }
     
-    func view(_ view: ARSKView, didAdd node: SKNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
-        let path = Bundle.main.path(forResource: "MyScene", ofType: "sks")
-        let fileURL = URL(fileURLWithPath: path!)
-        
-        let planeNode = SKReferenceNode(url: fileURL)
-        
-        let x = CGFloat(planeAnchor.center.x)
-        let y = CGFloat(planeAnchor.center.y)
-        
-        planeNode.position = CGPoint(x: x, y: y)
-        
-        node.addChild(planeNode)
+    private func rotateY(angle: Float) {
+        //scnNode?.removeFromParentNode()
+        scnNode?.eulerAngles = SCNVector3(0, angle, 0)
+        //if (scnNode != nil) {
+        //    viewMainScene.scene.rootNode.addChildNode(scnNode!)
+        //}
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    private func rotateX(angle: Float) {
+        scnNode?.removeFromParentNode()
+        scnNode?.eulerAngles = SCNVector3(angle, 0, 0)
+        if (scnNode != nil) {
+            viewMainScene.scene.rootNode.addChildNode(scnNode!)
+        }
     }
-    */
-
+    
+    private func rotateZ(angle: Float) {
+        scnNode?.removeFromParentNode()
+        scnNode?.eulerAngles = SCNVector3(0, 0, angle)
+        if (scnNode != nil) {
+            viewMainScene.scene.rootNode.addChildNode(scnNode!)
+        }
+    }
+    
+    
+    @IBAction func didTapPhotoButton(_ sender: Any) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        guard let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
+        self.dismiss(animated: true, completion: nil)
+        imgPreview.image = pickedImage
+        imgPreview.contentMode = .scaleAspectFill
+        //runImageDetection(pickedImage: pickedImage.cgImage!)
+    }
 }

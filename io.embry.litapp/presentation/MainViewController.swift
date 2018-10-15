@@ -39,23 +39,15 @@ class MainViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         viewMainScene.delegate = self    }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard let imageAnchor = anchor as? ARImageAnchor else { return }
-        let referenceImage = imageAnchor.referenceImage
         DispatchQueue.main.async {
-            
             self.detectionCount = self.detectionCount + 1
             self.lblStatusText.text = "Anchor detected \(self.detectionCount) times"
             
-            let x = CGFloat(referenceImage.physicalSize.width/2)
-            let y = CGFloat(referenceImage.physicalSize.height/2)
-            
-            let box = self.addMainBox()
-            box.position = SCNVector3(x,y,-0.2)
-            node.addChildNode(box)
-            
             guard let cat = self.addCat() else { return }
-            cat.position = SCNVector3(-0.2,y, -0.2)
-            node.addChildNode(cat)
+            cat.position = SCNVector3(0,0, -0.2)
+            cat.eulerAngles.x = 30
+            
+            self.viewMainScene.scene.rootNode.addChildNode(cat)
         }
     }
     
@@ -73,10 +65,11 @@ class MainViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     
     private func addCat() -> SCNNode? {
-        let container = SCNScene(named: "CatMac.dae")
+        let container = SCNScene(named: "CatMac.scn")
         let mainNode = container?.rootNode
+        mainNode?.name = "catNode"
         mainNode?.geometry?.firstMaterial?.diffuse.contents = "bg.png"
-        return container?.rootNode
+        return mainNode
     }
 }
 
