@@ -11,58 +11,70 @@ import ARKit
 import Vision
 
 class ARRunViewController:  UIViewController,
-                            UIImagePickerControllerDelegate,
-                            UINavigationControllerDelegate,
                             ARSessionDelegate {
     
-    
     @IBOutlet weak var viewMainScene: ARSCNView!
-    
-    var visa1: UIImage!
-    var visa2: UIImage!
-    var visa3: UIImage!
-    
-    
     @IBOutlet weak var preview1: UIImageView!
     @IBOutlet weak var preview2: UIImageView!
     @IBOutlet weak var preview3: UIImageView!
-    @IBOutlet weak var imgPreview: UIImageView!
-    @IBOutlet weak var btnPhoto: UIButton!
     
-    var scnNode: SCNNode?
-    var tapRecogniser: UITapGestureRecognizer!
-    var currentFloat = Float(0)
-    
-    var handsModel: VNCoreMLModel!
-    var currentBuffer: CVPixelBuffer!
+    private var scnNode: SCNNode?
+    private var currentFloat = Float(0)
+    private var card = SCNBox()
+    private var visa1 = SCNMaterial()
+    private var visa2 = SCNMaterial()
+    private var visa3 = SCNMaterial()
+    private var back = SCNMaterial()
+    private var action: SCNAction!
+    private var repeatAction: SCNAction!
+    private var black = SCNMaterial()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //arconfig
         let config = ARWorldTrackingConfiguration()
         config.isAutoFocusEnabled = true
+        config.planeDetection = .horizontal
+        config.isLightEstimationEnabled = true
+        config.isAutoFocusEnabled = true
+        
+        //scn
         viewMainScene.autoenablesDefaultLighting = true
-        viewMainScene.session.run(config, options: [])
-        viewMainScene.preferredFramesPerSecond = 10
+        viewMainScene.session.run(config, options: [.resetTracking, .removeExistingAnchors])
         viewMainScene.session.delegate = self
-        handsModel = try? VNCoreMLModel(for: hands().model)
-        let plane = SCNBox(width: 0.1, height: 0.05, length: 0.001, chamferRadius: 0.01)
-        scnNode = SCNNode(geometry: plane)
-        scnNode?.position = SCNVector3(0, 0, -0.2)
-        visa1 = UIImage(named: "visa-1")
-        visa2 = UIImage(named: "visa-2")
-        visa3 = UIImage(named: "visa-3")
-        scnNode?.geometry?.materials.first?.diffuse.contents = visa1
-        viewMainScene.scene.rootNode.addChildNode(scnNode!)
+        
+        //nodes
+        card = SCNBox(width: 0.1, height: 0.05, length: 0.001, chamferRadius: 0.01)
+        let visa1Img = UIImage(named: "visa-1")
+        let visa2Img = UIImage(named: "visa-2")
+        let visa3Img = UIImage(named: "visa-3")
+        let backImg = UIImage(named: "card-back")
+        visa1.diffuse.contents = visa1Img
+        visa2.diffuse.contents = visa2Img
+        visa3.diffuse.contents = visa3Img
+        back.diffuse.contents = backImg
+        black.diffuse.contents = UIColor.black
         let preview1Tap = UITapGestureRecognizer(target: self, action: #selector(didTapFirstPreview))
         let preview2Tap = UITapGestureRecognizer(target: self, action: #selector(didTapSecondPreview))
         let preview3Tap = UITapGestureRecognizer(target: self, action: #selector(didTapThirdPreview))
-        
+        //let planeTapRecogniser = UITapGestureRecognizer(target: self, action: #selector(didTapPlane))
+        action = SCNAction.rotateBy(x: 0, y: CGFloat(2 * Double.pi), z: 0, duration: 3.0)
+        repeatAction = SCNAction.repeatForever(action)
+        scnNode?.runAction(repeatAction)
         preview1.addGestureRecognizer(preview1Tap)
         preview1.isUserInteractionEnabled = true
         preview2.addGestureRecognizer(preview2Tap)
         preview2.isUserInteractionEnabled = true
         preview3.addGestureRecognizer(preview3Tap)
         preview3.isUserInteractionEnabled = true
+        
+        //viewMainScene.addGestureRecognizer(planeTapRecogniser)
+        scnNode = SCNNode(geometry: card)
+        scnNode?.geometry?.materials = [visa1, black, back, black, black, black]
+        scnNode?.runAction(repeatAction)
+        scnNode?.position = SCNVector3(0, 0, -0.1)
+        viewMainScene.scene.rootNode.addChildNode(scnNode!)
     }
     
     override func didReceiveMemoryWarning() {
@@ -72,74 +84,20 @@ class ARRunViewController:  UIViewController,
     
     @objc func didTapFirstPreview(_ sender: UITapGestureRecognizer) {
         scnNode?.removeFromParentNode()
-        scnNode?.geometry?.materials.first?.diffuse.contents = visa1
+        scnNode?.geometry?.materials = [visa1, black, back, black, black, black]
         viewMainScene.scene.rootNode.addChildNode(scnNode!)
     }
     
     @objc func didTapSecondPreview(_ sender: UITapGestureRecognizer) {
         scnNode?.removeFromParentNode()
-        scnNode?.geometry?.materials.first?.diffuse.contents = visa2
+        scnNode?.geometry?.materials = [visa2, black, back, black, black, black]
         viewMainScene.scene.rootNode.addChildNode(scnNode!)
     }
     
     @objc func didTapThirdPreview(_ sender: UITapGestureRecognizer) {
         scnNode?.removeFromParentNode()
-        scnNode?.geometry?.materials.first?.diffuse.contents = visa3
+        scnNode?.geometry?.materials = [visa3, black, back, black, black, black]
         viewMainScene.scene.rootNode.addChildNode(scnNode!)
-    }
-    
-    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        guard case .normal = frame.camera.trackingState else {
-            return
-        }
-        self.currentBuffer = frame.capturedImage
-        currentFloat = currentFloat + Float(1)
-        if (currentFloat == Float(360)) {
-            currentFloat = 0
-        }
-        print("current float is \(currentFloat)")
-        DispatchQueue.main.async { [weak self] in
-            self?.rotateY(angle: self?.currentFloat ?? Float(0))
-            //self?.runImageDetection()
-        }
-    }
-
-    private func runImageDetection() {
-        guard let model = handsModel else { return }
-        let request = VNCoreMLRequest(model: model) { (request, error) in
-            guard error == nil, let results = request.results as? [VNClassificationObservation] else { return
-            }
-            guard let result = results.first else { return }
-            DispatchQueue.main.async { [weak self] in
-                if (result.confidence > 0.9) {
-                    if (result.identifier  == "normal") {
-                        //self?.rotateY(angle: self?.currentFloat ?? Float(0))
-                        print("normal")
-                    } else if (result.identifier == "up") {
-                        //self?.rotateX(angle: self?.currentFloat ?? Float(0))
-                        print("left")
-                    } else if (result.identifier == "fist") {
-                        //self?.rotateZ(angle: self?.currentFloat ?? Float(0))
-                        print("up")
-                    }
-                }
-                else {
-                    //print("nothing")
-                    //self?.scnNode?.removeFromParentNode()
-                    //self?.scnNode?.position = SCNVector3(0, 0, 0)
-                }
-            }
-        }
-        let requestHandler = VNImageRequestHandler(cvPixelBuffer: self.currentBuffer, orientation: .up, options: [:])
-        let queue = DispatchQueue(label: "classificationQueue")
-        queue.async { [weak self] in
-            defer { self?.currentBuffer = nil }
-            do {
-                try requestHandler.perform([request])
-            } catch {
-                print(error)
-            }
-        }
     }
     
     private func rotateY(angle: Float) {
@@ -166,19 +124,28 @@ class ARRunViewController:  UIViewController,
         }
     }
     
-    
-    @IBAction func didTapPhotoButton(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        self.present(imagePicker, animated: true, completion: nil)
+    @objc func didTapPlane(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: viewMainScene)
+        let hitTestResults = viewMainScene.hitTest(location, types: [.estimatedHorizontalPlane])
+        
+        guard let result = hitTestResults.first else {
+            return
+        }
+       
+        scnNode?.removeFromParentNode()
+        scnNode = SCNNode(geometry: card)
+        scnNode?.geometry?.materials = [visa1, black, back, black, black, black]
+        scnNode?.runAction(repeatAction)
+        scnNode?.position = SCNVector3(result.worldTransform.columns.3.x, result.worldTransform.columns.3.y, result.worldTransform.columns.3.z)
+        viewMainScene.scene.rootNode.addChildNode(scnNode!)
     }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        guard let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
-        self.dismiss(animated: true, completion: nil)
-        imgPreview.image = pickedImage
-        imgPreview.contentMode = .scaleAspectFill
-        //runImageDetection(pickedImage: pickedImage.cgImage!)
-    }
+}
+
+extension BinaryInteger {
+    var degreesToRadians: CGFloat { return CGFloat(Int(self)) * .pi / 180 }
+}
+
+extension FloatingPoint {
+    var degreesToRadians: Self { return self * .pi / 180 }
+    var radiansToDegrees: Self { return self * 180 / .pi }
 }
