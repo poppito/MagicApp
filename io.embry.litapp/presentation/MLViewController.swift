@@ -19,7 +19,7 @@ class MLViewController: UIViewController, ARSessionDelegate {
     @IBOutlet weak var btnClassify: UIButton!
     
     private var lblTap: UILabel!
-    
+    private var isBill = false
     private var analysisRequests = [VNRequest]()
     private let sequenceRequestHandler = VNSequenceRequestHandler()
     private let maximumHistoryLength = 15
@@ -30,12 +30,6 @@ class MLViewController: UIViewController, ARSessionDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let config = ARWorldTrackingConfiguration()
-        config.planeDetection = .horizontal
-        config.isAutoFocusEnabled = true
-        config.isLightEstimationEnabled = true
-        viewMainScene.session.run(config, options: [])
-        viewMainScene.session.delegate = self
         inceptionModel = try? VNCoreMLModel(for: finModel2().model)
         btnClassify.isEnabled = false
     }
@@ -43,6 +37,21 @@ class MLViewController: UIViewController, ARSessionDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        viewMainScene.session.pause()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = .horizontal
+        config.isAutoFocusEnabled = true
+        config.isLightEstimationEnabled = true
+        viewMainScene.session.run(config, options: [])
+        viewMainScene.session.delegate = self
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         viewMainScene.session.pause()
     }
     
@@ -109,7 +118,7 @@ class MLViewController: UIViewController, ARSessionDelegate {
             }
             let distance = abs(movingAverage.x) + abs(movingAverage.y)
             print("distance is \(distance)")
-            if distance < 50 {
+            if distance < 30 {
                 return true
             }
         }
@@ -127,8 +136,10 @@ class MLViewController: UIViewController, ARSessionDelegate {
                         DispatchQueue.main.async { [weak self] in
                             if (result.identifier == "buy buttons") {
                                 self?.lblStatusText.text = "What are we buying today?"
+                                self?.showPaymentDetectionDialog()
                             } else if (result.identifier == "bpay") {
                                 self?.lblStatusText.text = "Bills suck 😩!"
+                                self?.showBillDetectionDialog()
                             }
                             else {
                                 self?.lblStatusText.text = "Looking around..."
@@ -181,5 +192,38 @@ class MLViewController: UIViewController, ARSessionDelegate {
         alert.addAction(yesButton)
         alert.addAction(noButton)
         return alert
+    }
+    
+    func showBillDetectionDialog() {
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
+            let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
+            let vc = storyBoard.instantiateViewController(withIdentifier: "CardRecommendationViewController")
+            as? CardRecommendationViewController
+            vc?.isBill = true
+            self.present(vc!, animated: true, completion: nil)
+            self.lblStatusText.text = "Looking around..."
+        }
+        let alert = getTwoButtonAlert(yesButton: yesAction, noButton: getNoAction(), title: "Paying a bill?", body: "Are you looking to pay a bill? Is this correct?")
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showPaymentDetectionDialog() {
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
+            let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
+            let vc = storyBoard.instantiateViewController(withIdentifier: "CardRecommendationViewController")
+            as? CardRecommendationViewController
+            vc?.isBill = false
+            self.present(vc!, animated: true, completion: nil)
+            self.lblStatusText.text = "Looking around..."
+        }
+        let alert = getTwoButtonAlert(yesButton: yesAction, noButton: getNoAction(), title: "Buying Something?", body: "Are you looking to buy something? Is this correct?")
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func getNoAction() -> UIAlertAction {
+        return UIAlertAction(title: "No", style: .cancel, handler: { (action) in
+            self.dismiss(animated: true, completion: nil)
+            self.lblStatusText.text = "Looking around..."
+        })
     }
 }

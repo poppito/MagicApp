@@ -85,7 +85,7 @@ class LaunchViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "toScnView" ) {
             let refImages = addDynamicARImages(images: images)
-            let destination = segue.destination as? MainViewController
+            let destination = segue.destination as? AnchorDetectionViewController
             destination?.arReferenceImages = refImages
         }
     }

@@ -13,7 +13,7 @@ import Dispatch
 import CoreML
 import Vision
 
-class MainViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+class AnchorDetectionViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 
     @IBOutlet weak var viewMainScene: ARSCNView!
     var arReferenceImages = [ARReferenceImage]()
