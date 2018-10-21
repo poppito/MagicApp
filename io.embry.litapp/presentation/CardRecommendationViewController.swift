@@ -24,6 +24,9 @@ class CardRecommendationViewController: UIViewController,
     
     private var amount : Int? = 0
     
+    @IBOutlet weak var pageControl: UIPageControl!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,6 +54,7 @@ class CardRecommendationViewController: UIViewController,
         cards.append(card2)
         
         cardCollectionView.isHidden = true
+        pageControl.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,12 +72,16 @@ class CardRecommendationViewController: UIViewController,
     }
     
     @objc func dismissKeyboard() {
-        amount = Int(textAmountEntry.text ?? "0")
+        let amountString = textAmountEntry.text?.replacingOccurrences(of: "$", with: "")
+        amount = Int(amountString ?? "0")
         let setAmount = amount ?? 0
         textAmountEntry.text = "$\(setAmount)"
         cardCollectionView.reloadData()
         cardCollectionView.isHidden = false
         textAmountEntry.resignFirstResponder()
+        pageControl.numberOfPages = cards.count
+        pageControl.currentPage = 0
+        pageControl.isHidden = false
     }
     
     //MARK:- collectionview delegates
@@ -85,9 +93,17 @@ class CardRecommendationViewController: UIViewController,
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.width)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if (indexPath.item == 0) {
+            pageControl.currentPage = 1
+        }
+        else if (indexPath.item == 1) {
+            pageControl.currentPage = 0
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cardCell", for: indexPath) as? CardCell
-        
         let card = cards[indexPath.item]
         if (card.isCreditCard!) {
             let points = (amount ?? 0) * 2

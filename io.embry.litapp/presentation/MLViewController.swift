@@ -32,6 +32,12 @@ class MLViewController: UIViewController, ARSessionDelegate {
         super.viewDidLoad()
         inceptionModel = try? VNCoreMLModel(for: finModel2().model)
         btnClassify.isEnabled = false
+        btnClassify.layer.cornerRadius = 2
+        btnClassify.layer.borderColor = UIColor.white.cgColor
+        btnClassify.backgroundColor = UIColor.gray.withAlphaComponent(0.8)
+        btnClassify.layer.borderWidth = 2
+        btnClassify.setTitleColor(UIColor.white, for: .normal)
+        btnClassify.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .disabled)
     }
 
     override func didReceiveMemoryWarning() {

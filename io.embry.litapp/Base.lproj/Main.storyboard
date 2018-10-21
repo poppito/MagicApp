@@ -27,12 +27,8 @@
                                 <rect key="frame" x="0.0" y="163" width="375" height="504"/>
                             </arscnView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MB2-aH-ZLr">
-                                <rect key="frame" x="137.5" y="123" width="100" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="b2h-g0-9Ka"/>
-                                    <constraint firstAttribute="width" constant="100" id="gaW-xc-Q7J"/>
-                                </constraints>
-                                <state key="normal" title="Ready to scan"/>
+                                <rect key="frame" x="10" y="587" width="355" height="30"/>
+                                <state key="normal" title="Ready to scan item"/>
                                 <connections>
                                     <action selector="didTapClassify:" destination="Pwz-d4-8ak" eventType="touchUpInside" id="bXU-s6-9jI"/>
                                 </connections>
@@ -41,12 +37,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="rOg-Nt-9hm" firstAttribute="trailing" secondItem="6Eh-Td-iEu" secondAttribute="trailing" constant="20" id="0OD-bj-dxc"/>
-                            <constraint firstItem="MB2-aH-ZLr" firstAttribute="centerX" secondItem="rOg-Nt-9hm" secondAttribute="centerX" id="3B9-X7-LUf"/>
+                            <constraint firstItem="TRR-J9-BgH" firstAttribute="top" secondItem="6Eh-Td-iEu" secondAttribute="bottom" constant="50" id="1yG-74-oJs"/>
                             <constraint firstItem="rOg-Nt-9hm" firstAttribute="bottom" secondItem="TRR-J9-BgH" secondAttribute="bottom" id="7un-Vu-CQV"/>
                             <constraint firstItem="6Eh-Td-iEu" firstAttribute="leading" secondItem="rOg-Nt-9hm" secondAttribute="leading" constant="20" id="9OO-cX-0HX"/>
                             <constraint firstItem="rOg-Nt-9hm" firstAttribute="trailing" secondItem="TRR-J9-BgH" secondAttribute="trailing" id="9gS-ee-8q7"/>
-                            <constraint firstItem="MB2-aH-ZLr" firstAttribute="top" secondItem="6Eh-Td-iEu" secondAttribute="bottom" constant="10" id="J2I-bl-DTI"/>
-                            <constraint firstItem="TRR-J9-BgH" firstAttribute="top" secondItem="MB2-aH-ZLr" secondAttribute="bottom" constant="10" id="j51-wq-TEC"/>
+                            <constraint firstItem="rOg-Nt-9hm" firstAttribute="trailing" secondItem="MB2-aH-ZLr" secondAttribute="trailing" constant="10" id="Dih-sI-JfA"/>
+                            <constraint firstItem="MB2-aH-ZLr" firstAttribute="leading" secondItem="rOg-Nt-9hm" secondAttribute="leading" constant="10" id="qOJ-w7-3dq"/>
+                            <constraint firstItem="rOg-Nt-9hm" firstAttribute="bottom" secondItem="MB2-aH-ZLr" secondAttribute="bottom" constant="50" id="toK-TB-Bao"/>
                             <constraint firstItem="TRR-J9-BgH" firstAttribute="leading" secondItem="rOg-Nt-9hm" secondAttribute="leading" id="vED-su-SfS"/>
                             <constraint firstItem="6Eh-Td-iEu" firstAttribute="top" secondItem="rOg-Nt-9hm" secondAttribute="top" constant="28" id="yCr-GW-lTM"/>
                         </constraints>
@@ -115,7 +112,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="koV-Tj-kxH">
-                                <rect key="frame" x="10" y="258.5" width="355" height="308.5"/>
+                                <rect key="frame" x="10" y="257" width="355" height="310"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YMC-Hj-8gu">
                                     <size key="itemSize" width="237" height="346"/>
@@ -182,6 +179,11 @@
                                     <action selector="didTapDismiss:" destination="xxP-X4-Yw7" eventType="touchUpInside" id="YbS-ss-c3u"/>
                                 </connections>
                             </button>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="qm9-Hw-z3Y">
+                                <rect key="frame" x="176" y="183.5" width="23" height="37"/>
+                                <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -189,12 +191,14 @@
                             <constraint firstItem="w6P-WJ-HTV" firstAttribute="top" secondItem="JTy-0o-hFz" secondAttribute="bottom" constant="15" id="1zh-9k-16s"/>
                             <constraint firstItem="SXT-Kk-u6E" firstAttribute="centerX" secondItem="9yB-Ua-aed" secondAttribute="centerX" id="5Qa-CG-2G5"/>
                             <constraint firstItem="koV-Tj-kxH" firstAttribute="leading" secondItem="9yB-Ua-aed" secondAttribute="leading" constant="10" id="EEM-wd-hl0"/>
+                            <constraint firstItem="qm9-Hw-z3Y" firstAttribute="centerX" secondItem="9yB-Ua-aed" secondAttribute="centerX" id="Lrt-ZB-yTd"/>
                             <constraint firstItem="9yB-Ua-aed" firstAttribute="bottom" secondItem="koV-Tj-kxH" secondAttribute="bottom" constant="100" id="NNc-tl-kLZ"/>
+                            <constraint firstItem="qm9-Hw-z3Y" firstAttribute="top" secondItem="SXT-Kk-u6E" secondAttribute="bottom" constant="25" id="PJh-q7-Idh"/>
                             <constraint firstItem="SXT-Kk-u6E" firstAttribute="top" secondItem="w6P-WJ-HTV" secondAttribute="bottom" constant="13" id="Uaq-ke-ZDW"/>
                             <constraint firstItem="JTy-0o-hFz" firstAttribute="top" secondItem="9yB-Ua-aed" secondAttribute="top" constant="10" id="VG4-91-eb0"/>
                             <constraint firstItem="9yB-Ua-aed" firstAttribute="trailing" secondItem="w6P-WJ-HTV" secondAttribute="trailing" constant="10" id="kmk-ek-NV9"/>
-                            <constraint firstItem="koV-Tj-kxH" firstAttribute="top" secondItem="SXT-Kk-u6E" secondAttribute="bottom" constant="100" id="tY5-id-x9D"/>
                             <constraint firstItem="9yB-Ua-aed" firstAttribute="trailing" secondItem="koV-Tj-kxH" secondAttribute="trailing" constant="10" id="tzx-Qn-zHL"/>
+                            <constraint firstItem="koV-Tj-kxH" firstAttribute="top" secondItem="qm9-Hw-z3Y" secondAttribute="bottom" constant="36.5" id="v6B-IU-9Cx"/>
                             <constraint firstItem="w6P-WJ-HTV" firstAttribute="leading" secondItem="9yB-Ua-aed" secondAttribute="leading" constant="10" id="xXp-Uk-3HD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9yB-Ua-aed"/>
@@ -202,6 +206,7 @@
                     <connections>
                         <outlet property="cardCollectionView" destination="koV-Tj-kxH" id="eGF-Ms-tQk"/>
                         <outlet property="labelInstruction" destination="w6P-WJ-HTV" id="1lk-5w-jZn"/>
+                        <outlet property="pageControl" destination="qm9-Hw-z3Y" id="tYW-sV-0Xv"/>
                         <outlet property="textAmountEntry" destination="SXT-Kk-u6E" id="809-OF-hTc"/>
                     </connections>
                 </viewController>
