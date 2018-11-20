@@ -60,7 +60,7 @@ class ARRunViewController:  UIViewController,
         let preview3Tap = UITapGestureRecognizer(target: self, action: #selector(didTapThirdPreview))
         //let planeTapRecogniser = UITapGestureRecognizer(target: self, action: #selector(didTapPlane))
         action = SCNAction.rotateBy(x: 0, y: CGFloat(2 * Double.pi), z: 0, duration: 3.0)
-        repeatAction = SCNAction.repeatForever(action)
+        repeatAction = SCNAction.repeat(action, count: 1)
         scnNode?.runAction(repeatAction)
         preview1.addGestureRecognizer(preview1Tap)
         preview1.isUserInteractionEnabled = true
@@ -74,6 +74,7 @@ class ARRunViewController:  UIViewController,
         scnNode?.geometry?.materials = [visa1, black, back, black, black, black]
         scnNode?.runAction(repeatAction)
         scnNode?.position = SCNVector3(0, 0, -0.1)
+        viewMainScene.allowsCameraControl = true
         viewMainScene.scene.rootNode.addChildNode(scnNode!)
     }
     

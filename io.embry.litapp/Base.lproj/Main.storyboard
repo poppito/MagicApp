@@ -448,8 +448,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="visa-1" width="1014" height="633"/>
-        <image name="visa-2" width="1014" height="633"/>
-        <image name="visa-3" width="1014" height="633"/>
+        <image name="visa-1" width="1000" height="648"/>
+        <image name="visa-2" width="1000" height="648"/>
+        <image name="visa-3" width="1000" height="648"/>
     </resources>
 </document>
